@@ -1,57 +1,8 @@
 import React from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Wrapper from "../assets/wrappers/CocktailPage";
 
-const object = [
-  {
-    strIngredient1: "Tequila",
-    strIngredient2: "Blue Curacao",
-    strIngredient3: "Lime juice",
-    strIngredient4: "Salt",
-    strIngredient5: null,
-    strIngredient6: null,
-    strIngredient7: null,
-    strIngredient8: null,
-    strIngredient9: null,
-    strIngredient10: null,
-    strIngredient11: null,
-    strIngredient12: null,
-    strIngredient13: null,
-    strIngredient14: null,
-    strIngredient15: null,
-  },
-];
-
-const result = object.reduce((acc, cur) => {
-  const key = Object.keys(cur);
-
-  for (let key in cur) {
-    if (key.startsWith("strIngredient") && cur[key] !== null) {
-      acc.push(cur[key]);
-    }
-  }
-  return acc;
-}, []);
-
-console.log(result.join(", "));
-// const test = [{ x: 1 }, { x: 1 }, { y: 1 }, { y: 1 }, { z: 1 }];
-
-// const uniquePairs = test.reduce((acc, item) => {
-//     const key = Object.keys(item);
-//     const value = item[key];
-
-//     const existingObj = acc.find((obj) => obj[key] === value);
-//     if (!existingObj) {
-//       acc.push({ [key]: value });
-//     }
-
-//     return acc;
-//   }, []);
-
-//   console.log(uniquePairs);
-
-///////////////////////////////////////////////////////////////////////////////////////////
 const singleCocktailUrl =
   "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=";
 
@@ -61,10 +12,16 @@ export const loader = async ({ params: { id } }) => {
 };
 
 export default function Cocktail() {
+  const navigate = useNavigate();
   const { id, data } = useLoaderData();
+  // console.log(data.drinks[0]);
+
+  if (!data) {
+    return navigate("/");
+  }
 
   const singleDrink = data.drinks[0];
-  //console.log(singleDrink);
+
   const {
     strDrink: name,
     strDrinkThumb: image,
@@ -73,6 +30,13 @@ export default function Cocktail() {
     strGlass: glass,
     strInstructions: instructions,
   } = singleDrink;
+  //console.log(name);
+  const validIngredients = Object.keys(singleDrink)
+    .filter(
+      (key) => key.startsWith("strIngredient") && singleDrink[key] !== null
+    )
+    .map((el) => singleDrink[el]);
+
   return (
     <Wrapper>
       <header>
@@ -98,8 +62,20 @@ export default function Cocktail() {
           </p>
 
           <p>
-            <span className="drink-data">instructons :</span> {instructions}
+            <span className="drink-data">instructons : </span> {instructions}
           </p>
+          <p>
+            <span className="drink-data">ingredients : </span>{" "}
+            {validIngredients.map((item, index) => {
+              return (
+                <span className="ing" key={item}>
+                  {item}
+                  {index < validIngredients.length - 1 ? "," : ""}
+                </span>
+              );
+            })}
+          </p>
+
           {/* <p>
             ingredients :
             {result.map((el) => {
