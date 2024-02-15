@@ -6,7 +6,7 @@ const Newsletter = () => {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   return (
-    <Form className="form">
+    <Form className="form" method="post">
       <h4 style={{ textAlign: "center", marginBottom: "2rem" }}>
         our newsletter
       </h4>
@@ -18,7 +18,7 @@ const Newsletter = () => {
         <input
           type="text"
           className="form-input"
-          name="name"
+          // name="name"
           id="name"
           required
         />
@@ -31,7 +31,7 @@ const Newsletter = () => {
         <input
           type="text"
           className="form-input"
-          name="lastName"
+          // name="lastName"
           id="lastName"
           required
         />
