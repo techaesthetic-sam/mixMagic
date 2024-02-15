@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import Wrapper from "../assets/wrappers/CocktailCard";
+import { useOutletContext } from "react-router-dom";
 
 export default function CocktailCard({ image, name, id, info, glass }) {
   return (
