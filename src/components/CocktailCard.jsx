@@ -14,7 +14,7 @@ export default function CocktailCard({ image, name, id, info, glass }) {
         <h5>{glass}</h5>
         <p>{info}</p>
         <Link to={`/cocktail/${id}`} className="btn">
-          HIT
+          Details
         </Link>
       </div>
     </Wrapper>
